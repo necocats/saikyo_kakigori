@@ -307,7 +307,7 @@ export default function OrderPage() {
             </button>
             <div />
           </div>
-          <div className="grid grid-cols-3 gap-1 w-24 relative h-30">
+          <div className="grid grid-cols-3 gap-1 w-24 relative h-[7.5rem]">
             <div className="col-start-2 row-start-1 flex justify-center items-center">
               <button
                 type="button"
