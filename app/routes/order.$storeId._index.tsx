@@ -134,7 +134,7 @@ export default function OrderPage() {
 
   const handleAButton = () => {
     if (selectedButtonIndex !== null) {
-      agreementButtons[selectedButtonIndex].action(setAgreedToQuestionnaire);
+      agreementButtons[selectedButtonIndex].action();
     }
   };
 
