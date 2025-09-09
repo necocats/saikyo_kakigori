@@ -272,7 +272,7 @@ export default function OrderPage() {
         </>
       )}
       {!agreedToQuestionnaire && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 p-4 flex justify-center items-center gap-16 w-full max-w-sm bg-white ">
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 p-4 flex justify-center items-center gap-16 w-full max-w-sm bg-white dark:bg-gray-800">
           <div className="grid grid-cols-3 gap-1 w-24">
             <div />
             <button
