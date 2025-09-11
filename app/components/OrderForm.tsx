@@ -94,9 +94,20 @@ export function OrderForm() {
       }
 
       const data = await response.json();
-      const text =
-        data.responses[0]?.fullTextAnnotation?.text.replace(/\s/g, "") ?? "";
-      setRecognizedText(text);
+      let text = "";
+      if (
+        Array.isArray(data.responses) &&
+        data.responses.length > 0 &&
+        data.responses[0].fullTextAnnotation &&
+        typeof data.responses[0].fullTextAnnotation.text === "string"
+      ) {
+        text = data.responses[0].fullTextAnnotation.text.replace(/\s/g, "");
+        setRecognizedText(text);
+      } else {
+        setVisionErr("文字認識結果が取得できませんでした。もう一度お試しください。");
+        setRecognizedText("");
+        return;
+      }
 
       const matchedMenu = menu.find((item) =>
         text.includes(item.name.replace(/\s/g, ""))
