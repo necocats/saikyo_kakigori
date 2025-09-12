@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
-import Webcam from "react-webcam";
 import { fetchMenu, createOrder, type MenuItem } from "../api/client";
 import Placeholder from "./Placeholder";
 import ErrorCard from "./ErrorCard";
@@ -18,8 +17,6 @@ export function OrderForm() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [visionErr, setVisionErr] = useState<string | null>(null);
   const [recognizedText, setRecognizedText] = useState<string | null>(null);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const webcamRef = useRef<Webcam>(null);
 
   useEffect(() => {
     if (!storeId) return;
@@ -36,15 +33,6 @@ export function OrderForm() {
       }
     })();
   }, [storeId]);
-
-  const handleCapture = useCallback(() => {
-    if (webcamRef.current) {
-      const image = webcamRef.current.getScreenshot();
-      setImageSrc(image);
-      setIsCameraOpen(false);
-      handleImage(image);
-    }
-  }, [webcamRef]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -104,7 +92,9 @@ export function OrderForm() {
         text = data.responses[0].fullTextAnnotation.text.replace(/\s/g, "");
         setRecognizedText(text);
       } else {
-        setVisionErr("文字認識結果が取得できませんでした。もう一度お試しください。");
+        setVisionErr(
+          "文字認識結果が取得できませんでした。もう一度お試しください。"
+        );
         setRecognizedText("");
         return;
       }
@@ -143,10 +133,19 @@ export function OrderForm() {
   return (
     <>
       <div className="mt-6">
-        <h2 className="text-center text-xl font-semibold">メニュー</h2>
-        <ul className="list-disc list-inside">
-          {menu.map((item) => (
-            <li key={item.id}>{item.name}</li>
+        <h2 className="text-center text-xl font-semibold">MENU</h2>
+        <ul>
+          {menu.map((item, index) => (
+            <li
+              key={item.id}
+              className={`
+                p-3.5
+                transition 
+                ${index < menu.length - 1 ? "border-b" : ""}
+              `}
+            >
+              <span className="text-black">{item.name}</span>
+            </li>
           ))}
         </ul>
       </div>
@@ -161,55 +160,23 @@ export function OrderForm() {
         <ErrorCard title="通信に失敗しました" message={err} />
       ) : (
         <div className="mt-6 space-y-4">
-          {isCameraOpen ? (
+          <>
             <div>
-              <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                className="w-full rounded-2xl"
+              <label
+                htmlFor="file-upload"
+                className="w-full block text-center cursor-pointer rounded-2xl border border-gray-300 dark:border-gray-700 py-3 font-semibold"
+              >
+                画像をアップロード
+              </label>
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="hidden"
               />
-              <button
-                type="button"
-                onClick={handleCapture}
-                className="w-full mt-2 rounded-2xl bg-green-500 text-white py-3 font-semibold"
-              >
-                撮影
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsCameraOpen(false)}
-                className="w-full mt-2 rounded-2xl border border-gray-300 dark:border-gray-700 py-3 font-semibold"
-              >
-                キャンセル
-              </button>
             </div>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => setIsCameraOpen(true)}
-                className="w-full rounded-2xl border border-gray-300 dark:border-gray-700 py-3 font-semibold"
-              >
-                カメラを起動
-              </button>
-              <div>
-                <label
-                  htmlFor="file-upload"
-                  className="w-full block text-center cursor-pointer rounded-2xl border border-gray-300 dark:border-gray-700 py-3 font-semibold"
-                >
-                  画像をアップロード
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-              </div>
-            </>
-          )}
+          </>
 
           {imageSrc && (
             <div className="mt-4">
