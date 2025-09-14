@@ -134,8 +134,15 @@ export function OrderForm() {
           );
         };
 
+        // Weight coefficients for the scoring algorithm
+        const HEIGHT_WEIGHT = 0.4;
+        const RATIO_WEIGHT = 0.3;
+        const BASELINE_WEIGHT = 0.3;
+
         const score =
-          std(heights) * 0.4 + std(ratios) * 0.3 + std(baselines) * 0.3;
+          std(heights) * HEIGHT_WEIGHT +
+          std(ratios) * RATIO_WEIGHT +
+          std(baselines) * BASELINE_WEIGHT;
 
         setHandwritingScore(score);
 
