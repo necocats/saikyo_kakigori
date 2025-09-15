@@ -94,6 +94,7 @@ const Othello: React.FC<OthelloProps> = ({ onLose }) => {
   const [turn, setTurn] = useState<Stone>(1); // 1:ユーザー, 2:AI
   const [message, setMessage] = useState<string>("あなたの番です");
   const [gameOver, setGameOver] = useState(false);
+  const [isWin, setIsWin] = useState(false);
 
   useEffect(() => {
     const userMoves = getValidMoves(board, 1);
@@ -105,6 +106,7 @@ const Othello: React.FC<OthelloProps> = ({ onLose }) => {
       const aiCount = flat.filter((s) => s === 2).length;
       if (userCount > aiCount) {
         setMessage("あなたはロボットです。");
+        setIsWin(true);
       } else if (userCount < aiCount) {
         setMessage("あなたは人間です。(3秒後に遷移します)");
         setTimeout(onLose, 3000);
@@ -180,7 +182,19 @@ const Othello: React.FC<OthelloProps> = ({ onLose }) => {
         ))}
       </div>
       <div className="text-center mt-2">{message}</div>
-      {gameOver && (
+      {/* パスボタン */}
+      {turn === 1 && getValidMoves(board, 1).length === 0 && !gameOver && (
+        <button
+          className="mt-4 w-full rounded bg-yellow-500 text-white py-2 font-semibold"
+          onClick={() => {
+            setTurn(2);
+            setMessage("あなたはパスしました。AIの番です");
+          }}
+        >
+          パス
+        </button>
+      )}
+      {gameOver && isWin && (
         <button
           className="mt-4 w-full rounded bg-blue-600 text-white py-2 font-semibold"
           onClick={() => {
@@ -188,6 +202,7 @@ const Othello: React.FC<OthelloProps> = ({ onLose }) => {
             setTurn(1);
             setGameOver(false);
             setMessage("あなたの番です");
+            setIsWin(false);
           }}
         >
           もう一度遊ぶ
