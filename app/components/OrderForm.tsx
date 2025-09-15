@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { fetchMenu, createOrder, type MenuItem } from "../api/client";
 import Placeholder from "./Placeholder";
@@ -17,6 +17,8 @@ export function OrderForm() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [visionErr, setVisionErr] = useState<string | null>(null);
   const [recognizedText, setRecognizedText] = useState<string | null>(null);
+  const [handwritingScore, setHandwritingScore] = useState<number | null>(null);
+  const [handwritingErr, setHandwritingErr] = useState<string | null>(null);
 
   useEffect(() => {
     if (!storeId) return;
@@ -51,6 +53,8 @@ export function OrderForm() {
     setVisionErr(null);
     setSelected("");
     setRecognizedText(null);
+    setHandwritingScore(null);
+    setHandwritingErr(null);
 
     try {
       const response = await fetch(
@@ -92,13 +96,64 @@ export function OrderForm() {
         text = data.responses[0].fullTextAnnotation.text.replace(/\s/g, "");
         setRecognizedText(text);
       } else {
-        setVisionErr(
-          "文字認識結果が取得できませんでした。もう一度お試しください。"
-        );
-        setRecognizedText("");
+        setVisionErr("文字認識結果が取得できませんでした。");
         return;
       }
 
+      // --- boundingBox の揺らぎをチェック ---
+      const words: any[] =
+        data.responses[0].fullTextAnnotation.pages?.flatMap((p: any) =>
+          p.blocks.flatMap((b: any) =>
+            b.paragraphs.flatMap((par: any) => par.words)
+          )
+        ) ?? [];
+
+      if (words.length > 1) {
+        const heights = words.map((w) => {
+          const ys = w.boundingBox.vertices.map((v: any) => v.y);
+          return Math.max(...ys) - Math.min(...ys);
+        });
+
+        const widths = words.map((w) => {
+          const xs = w.boundingBox.vertices.map((v: any) => v.x);
+          return Math.max(...xs) - Math.min(...xs);
+        });
+
+        const ratios = widths.map((w, i) => w / heights[i]);
+        const baselines = words.map((w) =>
+          Math.max(...w.boundingBox.vertices.map((v: any) => v.y))
+        );
+
+        // 平均と標準偏差を計算
+        const avg = (arr: number[]) =>
+          arr.reduce((a, b) => a + b, 0) / arr.length;
+        const std = (arr: number[]) => {
+          const m = avg(arr);
+          return Math.sqrt(
+            arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / arr.length
+          );
+        };
+
+        // Weight coefficients for the scoring algorithm
+        const HEIGHT_WEIGHT = 0.4;
+        const RATIO_WEIGHT = 0.3;
+        const BASELINE_WEIGHT = 0.3;
+
+        const score =
+          std(heights) * HEIGHT_WEIGHT +
+          std(ratios) * RATIO_WEIGHT +
+          std(baselines) * BASELINE_WEIGHT;
+
+        setHandwritingScore(score);
+
+        if (score < 2.0) {
+          // 揺らぎが小さい → フォントっぽい
+          setHandwritingErr("文字にあたたかみがありません。手書きしてください");
+          return;
+        }
+      }
+
+      // --- メニュー判定 ---
       const matchedMenu = menu.find((item) =>
         text.includes(item.name.replace(/\s/g, ""))
       );
@@ -106,9 +161,7 @@ export function OrderForm() {
       if (matchedMenu) {
         setSelected(matchedMenu.id);
       } else {
-        setVisionErr(
-          "そんなメニューはありません。もう一度読み込みなおしです。"
-        );
+        setVisionErr("そんなメニューはありません。");
       }
     } catch (error) {
       console.error("Error calling the Vision API", error);
@@ -194,8 +247,19 @@ export function OrderForm() {
             </p>
           )}
 
+          {/* スコア表示 */}
+          {/* {handwritingScore !== null && (
+            <p className="text-center mt-2">
+              手書きスコア: {handwritingScore.toFixed(2)}
+            </p>
+          )} */}
+
           {visionErr && (
             <p className="text-red-500 text-center mt-2">{visionErr}</p>
+          )}
+
+          {handwritingErr && (
+            <p className="text-red-500 text-center mt-2">{handwritingErr}</p>
           )}
 
           {selected && (
