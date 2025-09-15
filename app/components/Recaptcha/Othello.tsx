@@ -105,7 +105,7 @@ const Othello: React.FC<OthelloProps> = ({ onLose }) => {
       const userCount = flat.filter((s) => s === 1).length;
       const aiCount = flat.filter((s) => s === 2).length;
       if (userCount > aiCount) {
-        setMessage("あなたはロボットです。");
+        setMessage("ロボットの疑いがあります。");
         setIsWin(true);
       } else if (userCount < aiCount) {
         setMessage("あなたは人間です。(3秒後に遷移します)");
