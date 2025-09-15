@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { fetchMenu, createOrder, type MenuItem } from "../api/client";
 import Placeholder from "./Placeholder";
 import ErrorCard from "./ErrorCard";
+import { Dialog } from "@headlessui/react"; // headlessuiを使う場合（npm i @headlessui/react）
 
 const API_KEY = import.meta.env.VITE_VISION_API_KEY;
 
@@ -19,6 +20,8 @@ export function OrderForm() {
   const [recognizedText, setRecognizedText] = useState<string | null>(null);
   const [handwritingScore, setHandwritingScore] = useState<number | null>(null);
   const [handwritingErr, setHandwritingErr] = useState<string | null>(null);
+  const [showRecaptcha, setShowRecaptcha] = useState(false);
+  const [recaptchaChecked, setRecaptchaChecked] = useState(false);
 
   useEffect(() => {
     if (!storeId) return;
@@ -171,15 +174,21 @@ export function OrderForm() {
 
   const handleOrder = async () => {
     if (!storeId || !selected) return;
+    setShowRecaptcha(true); // まずモーダルを表示
+  };
+
+  const handleRecaptchaConfirm = async () => {
+    setShowRecaptcha(false);
     setSubmitting(true);
     setErr(null);
     try {
-      const data = await createOrder(storeId, selected);
+      const data = await createOrder(storeId!, selected);
       navigate(`/order/${storeId}/receipt/${data.id}`);
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e));
     } finally {
       setSubmitting(false);
+      setRecaptchaChecked(false);
     }
   };
 
@@ -193,7 +202,7 @@ export function OrderForm() {
               key={item.id}
               className={`
                 p-3.5
-                transition 
+                transition
                 ${index < menu.length - 1 ? "border-b" : ""}
               `}
             >
@@ -277,6 +286,38 @@ export function OrderForm() {
           >
             {submitting ? "送信中..." : "この内容で注文する"}
           </button>
+
+          {/* Recaptcha風モーダル */}
+          <Dialog open={showRecaptcha} onClose={() => setShowRecaptcha(false)}>
+            <div
+              className="fixed inset-0 bg-black/30 z-40"
+              aria-hidden="true"
+            />
+            <div className="fixed inset-0 z-50 flex text-gray-800 items-center justify-center">
+              <div className="relative bg-white rounded-xl p-8 mx-auto max-w-xs w-full shadow-lg">
+                <h2 className="text-lg font-bold mb-4 text-center">認証</h2>
+                <div className="flex items-center gap-2 mb-4">
+                  <input
+                    type="checkbox"
+                    id="recaptcha"
+                    checked={recaptchaChecked}
+                    onChange={(e) => setRecaptchaChecked(e.target.checked)}
+                    className="w-5 h-5"
+                  />
+                  <label htmlFor="recaptcha" className="select-none">
+                    私はロボットではありません
+                  </label>
+                </div>
+                <button
+                  className="w-full rounded bg-blue-600 text-white py-2 font-semibold disabled:opacity-50"
+                  disabled={!recaptchaChecked}
+                  onClick={handleRecaptchaConfirm}
+                >
+                  注文を確定する
+                </button>
+              </div>
+            </div>
+          </Dialog>
         </div>
       )}
     </>

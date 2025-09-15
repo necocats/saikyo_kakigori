@@ -2,6 +2,9 @@
 /node_modules/
 .env
 
+# mise config files
+.toml
+
 # React Router
 /.react-router/
 /build/
