@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router";
 import { fetchMenu, createOrder, type MenuItem } from "../api/client";
 import Placeholder from "./Placeholder";
 import ErrorCard from "./ErrorCard";
+import RecaptchaDialog from "./Recaptcha/Dialog";
+import React from "react";
 
 const API_KEY = import.meta.env.VITE_VISION_API_KEY;
 
@@ -19,6 +21,8 @@ export function OrderForm() {
   const [recognizedText, setRecognizedText] = useState<string | null>(null);
   const [handwritingScore, setHandwritingScore] = useState<number | null>(null);
   const [handwritingErr, setHandwritingErr] = useState<string | null>(null);
+  const [showRecaptcha, setShowRecaptcha] = useState(false);
+  const [recaptchaChecked, setRecaptchaChecked] = useState(false);
 
   useEffect(() => {
     if (!storeId) return;
@@ -171,15 +175,21 @@ export function OrderForm() {
 
   const handleOrder = async () => {
     if (!storeId || !selected) return;
+    setShowRecaptcha(true); // まずモーダルを表示
+  };
+
+  const handleRecaptchaConfirm = async () => {
+    setShowRecaptcha(false);
     setSubmitting(true);
     setErr(null);
     try {
-      const data = await createOrder(storeId, selected);
+      const data = await createOrder(storeId!, selected);
       navigate(`/order/${storeId}/receipt/${data.id}`);
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e));
     } finally {
       setSubmitting(false);
+      setRecaptchaChecked(false);
     }
   };
 
@@ -193,7 +203,7 @@ export function OrderForm() {
               key={item.id}
               className={`
                 p-3.5
-                transition 
+                transition
                 ${index < menu.length - 1 ? "border-b" : ""}
               `}
             >
@@ -277,6 +287,13 @@ export function OrderForm() {
           >
             {submitting ? "送信中..." : "この内容で注文する"}
           </button>
+
+          {/* Recaptcha風モーダル（オセロ） */}
+          <RecaptchaDialog
+            open={showRecaptcha}
+            onClose={() => setShowRecaptcha(false)}
+            onSuccess={handleRecaptchaConfirm}
+          />
         </div>
       )}
     </>
