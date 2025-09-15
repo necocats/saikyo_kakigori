@@ -133,7 +133,7 @@ const Othello: React.FC<OthelloProps> = ({ onLose }) => {
         setMessage("AIはパスしました。あなたの番です");
       }
     }
-  }, [turn, board, gameOver, onLose]);
+  }, [turn]);
 
   const handleCellClick = (x: number, y: number) => {
     if (gameOver || turn !== 1) return;
