@@ -19,9 +19,9 @@ const RecaptchaDialog: React.FC<RecaptchaDialogProps> = ({
       <div className="fixed inset-0 z-50 flex text-gray-800 items-center justify-center">
         <div className="relative bg-white rounded-xl p-8 mx-auto max-w-xs w-full shadow-lg">
           <h2 className="text-lg font-bold mb-4 text-center">
-            認証（オセロで勝利してください）
+            ロボットでないことを証明してください
           </h2>
-          <Othello onWin={onSuccess} />
+          <Othello onLose={onSuccess} />
           <button
             className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
             onClick={onClose}

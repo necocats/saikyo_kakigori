@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const BOARD_SIZE = 4;
+const BOARD_SIZE = 6;
 type Stone = 0 | 1 | 2; // 0:空, 1:ユーザー(黒), 2:AI(白)
 
 const initialBoard = (): Stone[][] => {
@@ -86,10 +86,10 @@ function getRandomMove(
 }
 
 interface OthelloProps {
-  onWin: () => void;
+  onLose: () => void;
 }
 
-const Othello: React.FC<OthelloProps> = ({ onWin }) => {
+const Othello: React.FC<OthelloProps> = ({ onLose }) => {
   const [board, setBoard] = useState<Stone[][]>(initialBoard());
   const [turn, setTurn] = useState<Stone>(1); // 1:ユーザー, 2:AI
   const [message, setMessage] = useState<string>("あなたの番です");
@@ -104,12 +104,12 @@ const Othello: React.FC<OthelloProps> = ({ onWin }) => {
       const userCount = flat.filter((s) => s === 1).length;
       const aiCount = flat.filter((s) => s === 2).length;
       if (userCount > aiCount) {
-        setMessage("あなたの勝ちです！");
-        setTimeout(onWin, 1000);
+        setMessage("あなたはロボットです。");
       } else if (userCount < aiCount) {
-        setMessage("AIの勝ちです");
+        setMessage("あなたは人間です。(3秒後に遷移します)");
+        setTimeout(onLose, 3000);
       } else {
-        setMessage("引き分けです");
+        setMessage("引き分けです。");
       }
     } else if (turn === 2 && !gameOver) {
       if (aiMoves.length > 0) {
@@ -131,7 +131,7 @@ const Othello: React.FC<OthelloProps> = ({ onWin }) => {
         setMessage("AIはパスしました。あなたの番です");
       }
     }
-  }, [turn, board, gameOver, onWin]);
+  }, [turn, board, gameOver, onLose]);
 
   const handleCellClick = (x: number, y: number) => {
     if (gameOver || turn !== 1) return;
