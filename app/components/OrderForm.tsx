@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router";
 import { fetchMenu, createOrder, type MenuItem } from "../api/client";
 import Placeholder from "./Placeholder";
 import ErrorCard from "./ErrorCard";
-import { Dialog } from "@headlessui/react"; // headlessuiを使う場合（npm i @headlessui/react）
+import RecaptchaDialog from "./Recaptcha/Dialog";
+import React from "react";
 
 const API_KEY = import.meta.env.VITE_VISION_API_KEY;
 
@@ -287,37 +288,12 @@ export function OrderForm() {
             {submitting ? "送信中..." : "この内容で注文する"}
           </button>
 
-          {/* Recaptcha風モーダル */}
-          <Dialog open={showRecaptcha} onClose={() => setShowRecaptcha(false)}>
-            <div
-              className="fixed inset-0 bg-black/30 z-40"
-              aria-hidden="true"
-            />
-            <div className="fixed inset-0 z-50 flex text-gray-800 items-center justify-center">
-              <div className="relative bg-white rounded-xl p-8 mx-auto max-w-xs w-full shadow-lg">
-                <h2 className="text-lg font-bold mb-4 text-center">認証</h2>
-                <div className="flex items-center gap-2 mb-4">
-                  <input
-                    type="checkbox"
-                    id="recaptcha"
-                    checked={recaptchaChecked}
-                    onChange={(e) => setRecaptchaChecked(e.target.checked)}
-                    className="w-5 h-5"
-                  />
-                  <label htmlFor="recaptcha" className="select-none">
-                    私はロボットではありません
-                  </label>
-                </div>
-                <button
-                  className="w-full rounded bg-blue-600 text-white py-2 font-semibold disabled:opacity-50"
-                  disabled={!recaptchaChecked}
-                  onClick={handleRecaptchaConfirm}
-                >
-                  注文を確定する
-                </button>
-              </div>
-            </div>
-          </Dialog>
+          {/* Recaptcha風モーダル（オセロ） */}
+          <RecaptchaDialog
+            open={showRecaptcha}
+            onClose={() => setShowRecaptcha(false)}
+            onSuccess={handleRecaptchaConfirm}
+          />
         </div>
       )}
     </>
