@@ -27,8 +27,8 @@
 }
 
 .modal-body {
-  overflow-y: auto; /* テキストが多すぎる場合にスクロールできるようにする */
+  overflow-y: auto;
   font-size: 14px;
   line-height: 1.6;
-  cursor: default; /* 全体がクリックできると見せかけないようにカーソルは標準に */
+  cursor: default;
 }
