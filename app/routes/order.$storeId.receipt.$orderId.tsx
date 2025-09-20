@@ -5,11 +5,7 @@ import ErrorCard from "../components/ErrorCard";
 import SuccessCard from "../components/SuccessCard";
 import "../css/TextModal.css";
 
-// ▼▼▼▼▼ ここから修正 ▼▼▼▼▼
-
-// 修正: モーダルコンポーネント
 const TrickyModal = ({ onClose }: { onClose: () => void }) => {
-  // 長い文章をパーツに分割
   const textPart1 =
     "1. 縦にスプーンを入れる。横からすくうのではなく、上から縦にスプーンを入れることで味のコントラストを楽しめます。";
   const textPart2 =
@@ -25,7 +21,6 @@ const TrickyModal = ({ onClose }: { onClose: () => void }) => {
       <div className="modal-content">
         <h2>おいしいかき氷の食べ方</h2>
         <div className="modal-body">
-          {/* テキストを20回繰り返して表示 */}
           {Array.from({ length: 20 }).map((_, index) => (
             <p key={index}>
               {textPart1}
