@@ -207,7 +207,7 @@ export function OrderForm() {
                 ${index < menu.length - 1 ? "border-b" : ""}
               `}
             >
-              <span className="text-black">{item.name}</span>
+              <span className="text-black dark:text-white">{item.name}</span>
             </li>
           ))}
         </ul>
