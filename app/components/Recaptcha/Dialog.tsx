@@ -1,4 +1,3 @@
-// Recaptcha風モーダル
 import { Dialog } from "@headlessui/react";
 import Othello from "./Othello";
 import React from "react";
@@ -23,13 +22,6 @@ const RecaptchaDialog: React.FC<RecaptchaDialogProps> = ({
             ロボットでないことを証明してください
           </h2>
           <Othello onLose={onSuccess} />
-          <button
-            className="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
-            onClick={onClose}
-            aria-label="閉じる"
-          >
-            ×
-          </button>
         </div>
       </div>
     </Dialog>
