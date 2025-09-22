@@ -1,6 +1,8 @@
 # necocats's 最凶かき氷注文UI
 
-かき氷注文システムを最凶にしました
+かき氷注文システムを最凶にしました。
+
+[ここ](https://saikyo-kakigori-xcbg.vercel.app/)から挑戦
 
 ## 目次
 
