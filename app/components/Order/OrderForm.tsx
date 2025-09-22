@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { fetchMenu, createOrder, type MenuItem } from "../api/client";
-import Placeholder from "./Placeholder";
-import ErrorCard from "./ErrorCard";
-import RecaptchaDialog from "./Recaptcha/Dialog";
+import { fetchMenu, createOrder, type MenuItem } from "../../api/client";
+import Placeholder from "../Placeholder";
+import ErrorCard from "../ErrorCard";
+import RecaptchaDialog from "../Recaptcha/Dialog";
 import React from "react";
 
 const API_KEY = import.meta.env.VITE_VISION_API_KEY;
