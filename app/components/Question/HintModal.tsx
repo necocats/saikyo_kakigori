@@ -1,3 +1,4 @@
+// ヒントモーダル
 import { useState } from "react";
 
 export function HintModal({

@@ -1,3 +1,4 @@
+// Recaptcha風モーダル
 import { Dialog } from "@headlessui/react";
 import Othello from "./Othello";
 import React from "react";

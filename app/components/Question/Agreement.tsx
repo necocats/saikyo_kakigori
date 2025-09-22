@@ -1,3 +1,4 @@
+// アンケート同意画面
 import { useState } from "react";
 import { Controller } from "./Controller";
 

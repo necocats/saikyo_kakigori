@@ -1,3 +1,4 @@
+// たのしいクイズ
 import { useState } from "react";
 import { HintModal } from "./HintModal";
 

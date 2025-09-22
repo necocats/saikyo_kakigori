@@ -1,3 +1,4 @@
+// オセロ
 import React, { useState, useEffect } from "react";
 
 const BOARD_SIZE = 6;

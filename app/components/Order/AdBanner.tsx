@@ -1,3 +1,4 @@
+// 広告風バナー
 import React, { useState } from "react";
 import "../../css/AdBanner.css";
 
