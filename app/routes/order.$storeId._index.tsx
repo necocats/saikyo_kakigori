@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Agreement } from "../components/Agreement";
-import { Questionnaire } from "../components/Questionnaire";
-import { OrderForm } from "../components/OrderForm";
-import AdBanner from "../components/AdBanner";
+import { Agreement } from "../components/Question/Agreement";
+import { Questionnaire } from "../components/Question/Questionnaire";
+import { OrderForm } from "../components/Order/OrderForm";
+import AdBanner from "../components/Order/AdBanner";
 
 export default function OrderPage() {
   const [agreedToQuestionnaire, setAgreedToQuestionnaire] = useState(false);

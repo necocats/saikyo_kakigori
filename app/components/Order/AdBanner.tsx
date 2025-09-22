@@ -1,5 +1,6 @@
+// 広告風バナー
 import React, { useState } from "react";
-import "./AdBanner.css";
+import "../../css/AdBanner.css";
 
 const AdBanner: React.FC = () => {
   const [visible, setVisible] = useState(true);

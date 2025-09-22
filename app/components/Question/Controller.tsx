@@ -1,3 +1,4 @@
+// 十字キーとボタンのコンポーネント
 export function Controller({
   onDpad,
   onAButton,

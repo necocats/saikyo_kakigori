@@ -1,3 +1,4 @@
+// たのしいクイズ
 import { useState } from "react";
 import { HintModal } from "./HintModal";
 
@@ -154,7 +155,7 @@ export function Questionnaire({
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="w-full rounded-2xl bg-yellow-200 border border-gray-300 dark:border-gray-700 py-3 font-semibold"
+              className="w-full rounded-2xl bg-yellow-200 border border-gray-300 dark:border-gray-700 py-3 font-semibold text-black"
             >
               ヒント
             </button>

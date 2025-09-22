@@ -1,3 +1,4 @@
+// オセロ
 import React, { useState, useEffect } from "react";
 
 const BOARD_SIZE = 6;
@@ -5,7 +6,7 @@ type Stone = 0 | 1 | 2; // 0:空, 1:ユーザー(黒), 2:AI(白)
 
 const initialBoard = (): Stone[][] => {
   const board: Stone[][] = Array.from({ length: BOARD_SIZE }, () =>
-    Array.from({ length: BOARD_SIZE }, () => 0)
+    Array.from({ length: BOARD_SIZE }, () => 0),
   );
   const mid = BOARD_SIZE / 2;
   board[mid - 1][mid - 1] = 2;
@@ -30,7 +31,7 @@ function getFlips(
   board: Stone[][],
   x: number,
   y: number,
-  color: Stone
+  color: Stone,
 ): [number, number][] {
   if (board[x][y] !== 0) return [];
   const flips: [number, number][] = [];
@@ -78,7 +79,7 @@ function getValidMoves(board: Stone[][], color: Stone): [number, number][] {
 
 function getRandomMove(
   board: Stone[][],
-  color: Stone
+  color: Stone,
 ): [number, number] | null {
   const moves = getValidMoves(board, color);
   if (moves.length === 0) return null;

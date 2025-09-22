@@ -1,3 +1,4 @@
+// アンケート同意画面
 import { useState } from "react";
 import { Controller } from "./Controller";
 
@@ -29,7 +30,7 @@ const agreementButtons = [
 
 export function Agreement({ onAgree }: { onAgree: () => void }) {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<number | null>(
-    null
+    null,
   );
 
   const handleDpad = (direction: "up" | "down" | "right") => {
@@ -45,11 +46,11 @@ export function Agreement({ onAgree }: { onAgree: () => void }) {
     if (direction === "up") {
       setSelectedButtonIndex(
         (selectedButtonIndex - 1 + agreementButtons.length) %
-          agreementButtons.length
+          agreementButtons.length,
       );
     } else {
       setSelectedButtonIndex(
-        (selectedButtonIndex + 1) % agreementButtons.length
+        (selectedButtonIndex + 1) % agreementButtons.length,
       );
     }
   };
