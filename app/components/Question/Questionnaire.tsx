@@ -61,7 +61,7 @@ export function Questionnaire({
         onComplete([...answers, selectedAnswer]);
       } else {
         alert(
-          "残念ですが不正解です。検索して調べてみましょう。ちなみに最初からやり直しだよ",
+          "残念ですが不正解です。検索して調べてみましょう。ちなみに最初からやり直しだよ"
         );
         onRetry();
       }
@@ -155,7 +155,7 @@ export function Questionnaire({
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="w-full rounded-2xl bg-yellow-200 border border-gray-300 dark:border-gray-700 py-3 font-semibold"
+              className="w-full rounded-2xl bg-yellow-200 border border-gray-300 dark:border-gray-700 py-3 font-semibold text-black"
             >
               ヒント
             </button>

@@ -19,7 +19,7 @@ const TrickyModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>おいしいかき氷の食べ方</h2>
+        <h1 className="dark:text-black">かき氷の正しい食べ方</h1>
         <div className="modal-body">
           {Array.from({ length: 20 }).map((_, index) => (
             <p key={index}>
@@ -72,7 +72,7 @@ export default function ReceiptPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsModalOpen(true);
-    }, 3000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -82,7 +82,7 @@ export default function ReceiptPage() {
         <ErrorCard title="注文を取得できませんでした" message={err} />
         <a
           href={`/order/${storeId}`}
-          className="mt-4 block text-center w-full rounded-2xl border border-gray-300 dark:border-gray-700 py-3 font-semibold"
+          className="mt-4 block text-center w-full rounded-2xl border border-gray-300 dark:border-gray-700 py-3 font-semibold "
         >
           注文画面に戻る
         </a>
