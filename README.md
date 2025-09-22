@@ -1,6 +1,6 @@
-# かき氷注文システムクライアント (Kakigori Order System Client)
+# necocats's 最凶かき氷注文UI
 
-かき氷注文システムのサンプルです。
+かき氷注文システムを最凶にしました
 
 ## 目次
 
@@ -16,15 +16,12 @@
 - [デプロイ](#デプロイ)
   - [ローカルでビルド](#ローカルでビルド)
   - [Dockerでデプロイ](#dockerでデプロイ-1)
-  - [手動デプロイ（Node）](#手動デプロイnode)
-- [スタイリング](#スタイリング)
 - [関連](#関連)
 
 ---
 
 ## 概要
-
-React Router + Vite + Tailwind で実装した、**かき氷注文システムのサンプルUI**です。必要であればこちらを参考にオリジナルUIを開発してください。メニューから味を選択して注文し、**注文番号**と**ステータス（準備中/呼出中/受渡完了）**を表示します。注文完了ページは URL に `orderId` を含むため **リロードしても復元** できます。
+無事に注文できたらスゴい！！
 
 ## セットアップ
 
@@ -83,9 +80,21 @@ docker run -p 3000:3000 my-app
 │   ├── api/
 │   │   └── client.ts # API呼び出し関連
 │   ├── components/
+│   │   ├──Order/
+│   │   │   ├──AdBanner.tsx # 広告風バナー
+│   │   │   └── OrderForm.tsx # 注文画面
+│   │   ├──Question/
+│   │   │   ├──Agreement.tsx # 最初の同意画面
+│   │   │   ├──Controller.tsx # 同意画面下の十字キーとボタン
+│   │   │   ├──HintModal.tsx # ヒントを出すモーダル
+│   │   │   └── Questionnaire.tsx # たのしいクイズ
+│   │   ├──Recaptcha/
+│   │   │   ├──Dialog.tsx # ロボットでないことを証明してもらうモーダル
+│   │   │   └── Othello.tsx # AIと対戦するオセロ
 │   │   ├── ErrorCard.tsx # エラー表示用のカード
 │   │   ├── SuccessCard.tsx # 注文完了カード
 │   │   └── Placeholder.tsx # 読込中のエフェクト
+│   ├── components/ # cssファイル
 │   ├── routes/
 │   │   ├── order.$storeId._index.tsx # ストアトップ（メニューの一覧表示）
 │   │   └── order.$storeId.receipt.$orderId.tsx # 注文完了画面（番号表示）
@@ -123,12 +132,7 @@ npm run build
 docker build -t my-app .
 docker run -p 3000:3000 my-app
 ```
-
-## スタイリング
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
 ## 関連
 
-バックエンド仕様: https://github.com/lambda-tech-club/kakigori-api-public
+
 
