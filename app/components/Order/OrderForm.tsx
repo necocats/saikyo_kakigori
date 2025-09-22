@@ -83,7 +83,7 @@ export function OrderForm() {
               },
             ],
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -109,8 +109,8 @@ export function OrderForm() {
       const words: any[] =
         data.responses[0].fullTextAnnotation.pages?.flatMap((p: any) =>
           p.blocks.flatMap((b: any) =>
-            b.paragraphs.flatMap((par: any) => par.words)
-          )
+            b.paragraphs.flatMap((par: any) => par.words),
+          ),
         ) ?? [];
 
       if (words.length > 1) {
@@ -126,7 +126,7 @@ export function OrderForm() {
 
         const ratios = widths.map((w, i) => w / heights[i]);
         const baselines = words.map((w) =>
-          Math.max(...w.boundingBox.vertices.map((v: any) => v.y))
+          Math.max(...w.boundingBox.vertices.map((v: any) => v.y)),
         );
 
         // 平均と標準偏差を計算
@@ -135,7 +135,7 @@ export function OrderForm() {
         const std = (arr: number[]) => {
           const m = avg(arr);
           return Math.sqrt(
-            arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / arr.length
+            arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / arr.length,
           );
         };
 
@@ -160,7 +160,7 @@ export function OrderForm() {
 
       // --- メニュー判定 ---
       const matchedMenu = menu.find((item) =>
-        text.includes(item.name.replace(/\s/g, ""))
+        text.includes(item.name.replace(/\s/g, "")),
       );
 
       if (matchedMenu) {
