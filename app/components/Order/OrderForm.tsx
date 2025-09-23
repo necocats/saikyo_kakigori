@@ -260,11 +260,11 @@ export function OrderForm() {
           )}
 
           {/* スコア表示 */}
-          {handwritingScore !== null && (
+          {/* {handwritingScore !== null && (
             <p className="text-center mt-2">
               手書きスコア: {handwritingScore.toFixed(2)}
             </p>
-          )}
+          )} */}
 
           {visionErr && (
             <p className="text-red-500 text-center mt-2">{visionErr}</p>
