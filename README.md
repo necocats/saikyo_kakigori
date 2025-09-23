@@ -68,11 +68,11 @@ docker run -p 3000:3000 my-app
 - `<storeId>` は店舗ID（例: `store-001`）  
 - `<orderId>` は作成された注文ID（例: `store-001-9`）
 
-| 画面 | パス | スクリーンショット |
-|---|---|---|
-| 注文ページ（メニュー一覧） | `http://localhost:5173/order/<storeId>` | <img width="320" alt="menu-list" src="https://github.com/user-attachments/assets/ead87b81-a895-4ba2-bbfc-d1673442ea96" /> |
-| 注文ページ（番号スライダー表示時） | `http://localhost:5173/order/<storeId>` | <img width="320" alt="menu-slider" src="https://github.com/user-attachments/assets/b97efb2d-c492-4171-b57a-421a54b955db" /> |
-| 注文完了ページ | `http://localhost:5173/order/<storeId>/receipt/<orderId>` | <img width="320" alt="receipt" src="https://github.com/user-attachments/assets/716e7047-3e7b-4ded-bead-c3f4ac4e6339" /> |
+| 画面 | パス | 
+|---|---|
+| 注文ページ（メニュー一覧） | `http://localhost:5173/order/<storeId>` | 
+| 注文ページ（番号スライダー表示時） | `http://localhost:5173/order/<storeId>` | 
+| 注文完了ページ | `http://localhost:5173/order/<storeId>/receipt/<orderId>` | 
 
 ## ファイル構成
 
