@@ -83,7 +83,7 @@ export function OrderForm() {
               },
             ],
           }),
-        },
+        }
       );
 
       if (!response.ok) {
@@ -109,8 +109,8 @@ export function OrderForm() {
       const words: any[] =
         data.responses[0].fullTextAnnotation.pages?.flatMap((p: any) =>
           p.blocks.flatMap((b: any) =>
-            b.paragraphs.flatMap((par: any) => par.words),
-          ),
+            b.paragraphs.flatMap((par: any) => par.words)
+          )
         ) ?? [];
 
       if (words.length > 1) {
@@ -126,7 +126,7 @@ export function OrderForm() {
 
         const ratios = widths.map((w, i) => w / heights[i]);
         const baselines = words.map((w) =>
-          Math.max(...w.boundingBox.vertices.map((v: any) => v.y)),
+          Math.max(...w.boundingBox.vertices.map((v: any) => v.y))
         );
 
         // 平均と標準偏差を計算
@@ -135,7 +135,7 @@ export function OrderForm() {
         const std = (arr: number[]) => {
           const m = avg(arr);
           return Math.sqrt(
-            arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / arr.length,
+            arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / arr.length
           );
         };
 
@@ -143,6 +143,7 @@ export function OrderForm() {
         const HEIGHT_WEIGHT = 0.4;
         const RATIO_WEIGHT = 0.3;
         const BASELINE_WEIGHT = 0.3;
+        const SCORE = 1.0;
 
         const score =
           std(heights) * HEIGHT_WEIGHT +
@@ -151,7 +152,7 @@ export function OrderForm() {
 
         setHandwritingScore(score);
 
-        if (score < 2.0) {
+        if (score < SCORE) {
           // 揺らぎが小さい → フォントっぽい
           setHandwritingErr("文字にあたたかみがありません。手書きしてください");
           return;
@@ -160,7 +161,7 @@ export function OrderForm() {
 
       // --- メニュー判定 ---
       const matchedMenu = menu.find((item) =>
-        text.includes(item.name.replace(/\s/g, "")),
+        text.includes(item.name.replace(/\s/g, ""))
       );
 
       if (matchedMenu) {
@@ -259,11 +260,11 @@ export function OrderForm() {
           )}
 
           {/* スコア表示 */}
-          {/* {handwritingScore !== null && (
+          {handwritingScore !== null && (
             <p className="text-center mt-2">
               手書きスコア: {handwritingScore.toFixed(2)}
             </p>
-          )} */}
+          )}
 
           {visionErr && (
             <p className="text-red-500 text-center mt-2">{visionErr}</p>
