@@ -7,8 +7,6 @@ import ErrorCard from "../ErrorCard";
 import RecaptchaDialog from "../Recaptcha/Dialog";
 import React from "react";
 
-const API_KEY = import.meta.env.VITE_VISION_API_KEY;
-
 export function OrderForm() {
   const navigate = useNavigate();
   const { storeId } = useParams<{ storeId: string }>();
@@ -62,29 +60,17 @@ export function OrderForm() {
     setHandwritingErr(null);
 
     try {
-      const response = await fetch(
-        `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            requests: [
-              {
-                image: {
-                  content: base64Image.split(",")[1],
-                },
-                features: [
-                  {
-                    type: "TEXT_DETECTION",
-                  },
-                ],
-              },
-            ],
-          }),
-        }
-      );
+      // APIキーをクライアントに置かないため、サーバー側のプロキシ経由で呼ぶ。
+      // レスポンス形式は Vision API のものがそのまま返る。
+      const response = await fetch("/api/vision", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image: base64Image.split(",")[1],
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Cloud Vision API request failed");

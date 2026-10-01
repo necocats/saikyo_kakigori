@@ -32,7 +32,7 @@
 | 変数名 | デフォルト値 | 説明 |
 |---|---|---|
 | `VITE_API_BASE` | `http://localhost:8080` | APIのベースURL |
-| `VITE_VISION_API_KEY` | `XXX` | Google Cloude Vision APIのAPIキー |
+| `VISION_API_KEY` | `XXX` | Google Cloud Vision APIのAPIキー（**サーバー側のみ。`VITE_` を付けるとクライアントに露出するので付けないこと**） |
 | `VITE_STORE_ID` | `YYY` | 店舗ID |
 
 #### 設定例
